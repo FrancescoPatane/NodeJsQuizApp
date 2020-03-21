@@ -1,0 +1,27 @@
+{
+  "name": "quiz_app",
+  "version": "1.0.0",
+  "description": "Quiz in node js",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FrancescoPatane/NodeJsQuizApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FrancescoPatane/NodeJsQuizApp/issues"
+  },
+  "homepage": "https://github.com/FrancescoPatane/NodeJsQuizApp#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
