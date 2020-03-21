@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 
 app.get('/', function (req, res) {
-  res.send('Hello World!');
+  res.send('Start quiz!');
 });
 
 app.listen(3000, function () {
