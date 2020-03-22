@@ -1,6 +1,15 @@
-const router = require('express').Router();
-const database = require('./../db');
+const router = require('express').Router()
+const database = require('./../db')
+const path = require('path')
 
+
+router.get('/js', (req, res) => {
+  res.sendFile(path.join('./../client/App.js'))
+});
+
+router.get('/quiz', (req, res) => {
+  res.sendFile(path.join(__dirname, '../', 'views', 'home.html'))
+});
 
 router.get('/quiz/categories', (req, res) => {
   database.findAllCateogories().then(function(result){
