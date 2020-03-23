@@ -9,25 +9,50 @@ const {
 } = MaterialUI;
 
 
-function SelectCategory() {
 
-    const [category, setCategory] = React.useState('Storia');
+class SelectCategory extends React.Component {
 
-    const changeCategory = event => {
-        setCategory(event.target.value)
-    };
+    constructor(props) {
+        super(props)
+        this.state = {
+            selected: '',
+            categories: []
+        }
+        this.handleChange = this.handleChange.bind(this)
 
-    return (
-        <Select
-  labelId="demo-simple-select-label"
-  id="demo-simple-select"
-  value={category}
-  onChange={changeCategory}
->
-<MenuItem value={'Storia'}>Storia</MenuItem>
-<MenuItem value={'Geografia'}>Geografia</MenuItem>
-<MenuItem value={'Biologia'}>Biologia</MenuItem>
-</Select>)
+    }
+
+    componentDidMount() {
+        fetch("http://localhost:3000/quiz/categories")
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        categories: result.payload,
+                    })
+                },
+                (error) => {
+                    console.log(error)
+                })
+    }
+
+    handleChange(event) {
+        this.setState({
+            selected: event.target.value
+        });
+    }
+
+    render() {
+        const {
+            categories,
+            selected
+        } = this.state
+        return (
+            <Select labelId="demo-simple-select-label" id="demo-simple-select" value={selected} onChange={this.handleChange}>
+              {
+                categories.map(e => <MenuItem value={e} key={e}>{e}</MenuItem>)}
+              </Select>)
+    }
 }
 
 
@@ -60,10 +85,6 @@ function MainGrid() {
 }
 
 
-
-const handleChange = event => {
-    setAge(event.target.value);
-};
 
 class App extends React.Component {
     render() {
