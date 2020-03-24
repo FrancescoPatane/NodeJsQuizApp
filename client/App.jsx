@@ -64,6 +64,44 @@ class SelectCategory extends React.Component {
       }
     }
 
+class QuizPanel extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      questions: [],
+      answers: [],
+      correctAnswer: null
+    }
+
+  }
+
+  render() {
+    return(
+    <Grid container spacing={3}>
+    <Grid item  sm={4}/>
+    <Grid item  sm={4}>
+      <Card children="qual è la domanda in questa box"/>
+    </Grid>
+    <Grid item  sm={4}/>
+    <Grid item sm={6}>
+      <Card children="aaaa"/>
+    </Grid>
+    <Grid item sm={6}>
+      <Card children="aaaa"/>
+    </Grid>
+    <Grid item sm={6}>
+      <Card children="aaaa"/>
+    </Grid>
+    <Grid item sm={6}>
+      <Card children="aaaa"/>
+    </Grid>
+</Grid>
+)
+  }
+
+    }
+
     class MainGrid extends React.Component {
 
       constructor(props) {
@@ -84,16 +122,17 @@ class SelectCategory extends React.Component {
 
 
       render() {
-        const {selected} = this.state
+        const {selected, selectedCategory} = this.state
+        let quizContainer
+        let header
         let pannelloCategoria
         if(selected && selected !==''){
-          pannelloCategoria = (
-            <h1>
-              {selected}
-            </h1>
+          header = "Hai selezionato " + selected
+          quizContainer = (
+            <QuizPanel selectedCategory={selectedCategory}/>
           )
         }else{
-
+          header = "Metti alla prova la tua conoscenza!"
           pannelloCategoria = (
             <div>
               <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
@@ -105,30 +144,14 @@ class SelectCategory extends React.Component {
           <Grid container spacing={3}>
             <Grid item xs={12} style={{textAlign: "center"}}>
               <h1>
-                Metti alla prova la tua conoscenza!
+                {header}
               </h1>
             </Grid>
             <Grid item sm={6}>
               {pannelloCategoria}
             </Grid>
             <Grid item sm={6}/>
-            <Grid item  sm={4}/>
-            <Grid item  sm={4}>
-              <Card children="qual è la domanda in questa box"/>
-            </Grid>
-            <Grid item  sm={4}/>
-            <Grid item sm={6}>
-              <Card children="aaaa"/>
-            </Grid>
-            <Grid item sm={6}>
-              <Card children="aaaa"/>
-            </Grid>
-            <Grid item sm={6}>
-              <Card children="aaaa"/>
-            </Grid>
-            <Grid item sm={6}>
-              <Card children="aaaa"/>
-            </Grid>
+            {quizContainer}
           </Grid>
         )
       }
