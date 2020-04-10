@@ -1,13 +1,13 @@
 // import Button from '@material-ui/core/Button';
 const {
-  Button,
   Grid,
   Paper,
   Select,
   MenuItem,
   InputLabel,
   Container,
-  Card
+  Card,
+  Button
 } = MaterialUI;
 
 
@@ -63,44 +63,95 @@ class SelectCategory extends React.Component {
         )
       }
     }
-
 class QuizPanel extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
+      index: 0,
       questions: [],
       answers: [],
-      correctAnswer: null
+      correctAnswer: null,
+      loading: true
     }
 
   }
+
+  componentDidMount() {
+    fetch("http://localhost:3000/quiz/category/" + this.props.selectedCategory).then(res => res.json()).then((result) => {
+      this.setState({
+        questions: result.payload.questions,
+        currentQuestion: result.payload.questions[this.state.index],
+        answers: result.payload.questions[this.state.index].answers,
+        loading: false
+      })
+    }, (error) => {
+      console.log(error)
+    })
+  }
+
+  next = () => {
+    this.setState({
+    			index: this.state.index + 1,
+    			currentQuestion: this.state.questions[this.state.index + 1],
+          answers: this.state.questions[this.state.index + 1].answers
+    		});
+}
+
+previous = () => {
+
+  this.setState({
+  			index: this.state.index - 1,
+  			currentQuestion: this.state.questions[this.state.index -1],
+        answers: this.state.questions[this.state.index -1].answers
+  		});
+}
+
+
+
+
+
 
   render() {
-    return(
-    <Grid container spacing={3}>
-    <Grid item  sm={4}/>
-    <Grid item  sm={4}>
-      <Card children="qual è la domanda in questa box"/>
-    </Grid>
-    <Grid item  sm={4}/>
-    <Grid item sm={6}>
-      <Card children="aaaa"/>
-    </Grid>
-    <Grid item sm={6}>
-      <Card children="aaaa"/>
-    </Grid>
-    <Grid item sm={6}>
-      <Card children="aaaa"/>
-    </Grid>
-    <Grid item sm={6}>
-      <Card children="aaaa"/>
-    </Grid>
-</Grid>
-)
+    const {currentQuestion, answers, index, questions} = this.state
+    if (currentQuestion) {
+      return (<Grid container="container" spacing={6} style={{margin: "4%"}}>
+        <Grid item="item" sm={4}/>
+        <Grid item="item" sm={4}>
+          <Card children={currentQuestion.text}/>
+        </Grid>
+        <Grid item="item" sm={4}/>
+        <Grid item="item" sm={6}>
+          <Button variant="contained" color="primary" children={answers[0].text} style={{width: "100%"}}/>
+        </Grid>
+        <Grid item="item" sm={6}>
+          <Button variant="contained" color="primary" children={answers[1].text} style={{width: "100%"}}/>
+        </Grid>
+        <Grid item="item" sm={6}>
+          <Button variant="contained" color="primary" children={answers[2].text} style={{width: "100%"}}/>
+        </Grid>
+        <Grid item="item" sm={6}>
+          <Button variant="contained" color="primary" children={answers[3].text} style={{width: "100%"}}/>
+        </Grid>
+        <Grid item="item" sm={3}/>
+        <Grid item="item" sm={3}>
+          {index > 0 && (
+          <Button variant="contained" color="primary" onClick={this.previous} children="<<" style={{width: "100%"}}></Button>
+)}
+        </Grid>
+        <Grid item="item" sm={3}>
+          {index < questions.length-1 && (
+          <Button variant="contained" color="primary" onClick={this.next} children=">>" style={{width: "100%"}}></Button>
+)}
+        </Grid>
+        <Grid item="item" sm={3}/>
+      </Grid>)
+    } else {
+      return (<Grid container="container" spacing={6}/>)
+    }
   }
 
-    }
+}
 
     class MainGrid extends React.Component {
 
@@ -110,26 +161,39 @@ class QuizPanel extends React.Component {
           selectedCategory: null
         }
         this.onCategoryChange = this.onCategoryChange.bind(this)
+        this.reset = this.reset.bind(this)
 
       }
 
       onCategoryChange(value) {
         this.setState({
-          selected: value
+          selectedCategory: value
+        })
+
+      }
+
+      reset() {
+        this.setState({
+          selectedCategory: null
         })
 
       }
 
 
       render() {
-        const {selected, selectedCategory} = this.state
+        const {selectedCategory} = this.state
         let quizContainer
         let header
         let pannelloCategoria
-        if(selected && selected !==''){
-          header = "Hai selezionato " + selected
+        if(selectedCategory && selectedCategory !==''){
+          header = "Hai selezionato " + selectedCategory
+          pannelloCategoria = (
+            <div>
+              <Button variant="contained" color="primary" onClick={this.reset} children="<<" style={{width: "100%"}}/>
+            </div>
+          )
           quizContainer = (
-            <QuizPanel selectedCategory={selectedCategory}/>
+            <QuizPanel selectedCategory={selectedCategory} onCategoryChange={this.onCategoryChange}/>
           )
         }else{
           header = "Metti alla prova la tua conoscenza!"
@@ -141,15 +205,17 @@ class QuizPanel extends React.Component {
           )
         }
         return (
-          <Grid container spacing={3}>
+          <Grid container spacing={6}>
             <Grid item xs={12} style={{textAlign: "center"}}>
               <h1>
                 {header}
               </h1>
             </Grid>
-            <Grid item sm={6}>
+            <Grid item sm={2}/>
+            <Grid item sm={2}>
               {pannelloCategoria}
             </Grid>
+            <Grid item sm={2}/>
             <Grid item sm={6}/>
             {quizContainer}
           </Grid>
