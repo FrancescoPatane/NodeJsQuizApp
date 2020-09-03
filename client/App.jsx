@@ -139,11 +139,11 @@ previous = () => {
         <Grid item="item" sm={4}/>
         <Grid item="item" sm={4}>
           <Card children={currentQuestion.text}/>
-            <Dialog  open={this.state.openDialog && this.state.outcome} onClose={this.handleClose} >
-              <DialogTitle>Risposta esatta</DialogTitle>
+            <Dialog  open={this.state.openDialog && this.state.outcome} onClose={this.handleClose}  >
+              <DialogTitle style={{backgroundColor:"darkgreen"}}><span style={{color:"white"}}>Risposta esatta</span></DialogTitle>
             </Dialog>
-            <Dialog  open={this.state.openDialog && !this.state.outcome} onClose={this.handleClose} >
-              <DialogTitle>Risposta sbagliata</DialogTitle>
+            <Dialog  open={this.state.openDialog && !this.state.outcome} onClose={this.handleClose}>
+              <DialogTitle  style={{backgroundColor:"darkred"}}><span style={{color:"white"}}>Risposta sbagliata</span></DialogTitle>
             </Dialog>
         </Grid>
         <Grid item="item" sm={4}/>
