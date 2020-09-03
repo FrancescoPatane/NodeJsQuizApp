@@ -1,4 +1,5 @@
-// import Button from '@material-ui/core/Button';
+
+
 const {
   Grid,
   Paper,
@@ -7,7 +8,9 @@ const {
   InputLabel,
   Container,
   Card,
-  Button
+  Button,
+  Dialog,
+  DialogTitle
 } = MaterialUI;
 
 
@@ -72,6 +75,8 @@ class QuizPanel extends React.Component {
       questions: [],
       answers: [],
       correctAnswer: null,
+      outcome: null,
+      openDialog: false,
       loading: true
     }
 
@@ -108,8 +113,23 @@ previous = () => {
 }
 
 
+ selectAnswer(number) {
+   let selectionOutcome = number === this.state.currentQuestion.correctAnswer
+   console.log(selectionOutcome)
+
+  this.setState({
+  			outcome: selectionOutcome,
+        openDialog: true
+  		});
+}
 
 
+ handleClose = () => {
+
+   this.setState({
+         openDialog: false
+      });
+ }
 
 
   render() {
@@ -119,30 +139,36 @@ previous = () => {
         <Grid item="item" sm={4}/>
         <Grid item="item" sm={4}>
           <Card children={currentQuestion.text}/>
+            <Dialog  open={this.state.openDialog && this.state.outcome} onClose={this.handleClose} >
+              <DialogTitle>Risposta esatta</DialogTitle>
+            </Dialog>
+            <Dialog  open={this.state.openDialog && !this.state.outcome} onClose={this.handleClose} >
+              <DialogTitle>Risposta sbagliata</DialogTitle>
+            </Dialog>
         </Grid>
         <Grid item="item" sm={4}/>
         <Grid item="item" sm={6}>
-          <Button variant="contained" color="primary" children={answers[0].text} style={{width: "100%"}}/>
+          <Button variant="contained" color="primary" children={answers[0].text} onClick={() => this.selectAnswer(1)} style={{width: "100%"}}/>
         </Grid>
         <Grid item="item" sm={6}>
-          <Button variant="contained" color="primary" children={answers[1].text} style={{width: "100%"}}/>
+          <Button variant="contained" color="primary" children={answers[1].text} onClick={() => this.selectAnswer(2)} style={{width: "100%"}}/>
         </Grid>
         <Grid item="item" sm={6}>
-          <Button variant="contained" color="primary" children={answers[2].text} style={{width: "100%"}}/>
+          <Button variant="contained" color="primary" children={answers[2].text} onClick={() => this.selectAnswer(3)} style={{width: "100%"}}/>
         </Grid>
         <Grid item="item" sm={6}>
-          <Button variant="contained" color="primary" children={answers[3].text} style={{width: "100%"}}/>
+          <Button variant="contained" color="primary" children={answers[3].text} onClick={() => this.selectAnswer(4)} style={{width: "100%"}}/>
         </Grid>
         <Grid item="item" sm={3}/>
         <Grid item="item" sm={3}>
           {index > 0 && (
           <Button variant="contained" color="primary" onClick={this.previous} children="<<" style={{width: "100%"}}></Button>
-)}
+          )}
         </Grid>
         <Grid item="item" sm={3}>
           {index < questions.length-1 && (
           <Button variant="contained" color="primary" onClick={this.next} children=">>" style={{width: "100%"}}></Button>
-)}
+          )}
         </Grid>
         <Grid item="item" sm={3}/>
       </Grid>)
