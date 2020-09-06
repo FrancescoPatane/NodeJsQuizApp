@@ -1,15 +1,13 @@
+const config = require('./../config');
 const MongoClient = require('mongodb').MongoClient
-const url = 'mongodb://localhost:27017'
-const dbName = 'test'
-const collectionName = 'quiz'
-const client = new MongoClient(url)
+
 
 
 const findAllCateogories = function() {
-  return MongoClient.connect(url)
+  return MongoClient.connect(config.db_uri)
   .then(function(dbClient) {
-    const db = dbClient.db(dbName)
-    return db.collection(collectionName).distinct('category')
+    const db = dbClient.db(config.db_name)
+    return db.collection(config.collection_name).distinct('category')
     .then(function(result) {
       return result
     });
@@ -19,10 +17,10 @@ const findAllCateogories = function() {
 }
 
 const findQuizByCategory = function(category) {
-  return MongoClient.connect(url)
+  return MongoClient.connect(config.db_uri)
   .then(function(dbClient) {
-    const db = dbClient.db(dbName)
-    return db.collection(collectionName).findOne({category:category})
+    const db = dbClient.db(config.db_name)
+    return db.collection(config.collection_name).findOne({category:category})
     .then(function(result) {
       return result
     })

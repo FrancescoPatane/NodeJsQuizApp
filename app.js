@@ -9,9 +9,9 @@ app.use(require('./routes'))
 
 app.use(express.static(path.join(__dirname, 'client')))
 
-app.get('/', function (req, res) {
-  res.send(__dirname);
-});
+
+
+
 
 app.listen(3000, function () {
   console.log('Quiz app listening on port 3000!');

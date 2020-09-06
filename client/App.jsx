@@ -28,7 +28,7 @@ class SelectCategory extends React.Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:3000/quiz/categories")
+    fetch("/quiz/categories")
     .then(res => res.json())
     .then(
       (result) => {
@@ -83,7 +83,7 @@ class QuizPanel extends React.Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:3000/quiz/category/" + this.props.selectedCategory).then(res => res.json()).then((result) => {
+    fetch("/quiz/category/" + this.props.selectedCategory).then(res => res.json()).then((result) => {
       this.setState({
         questions: result.payload.questions,
         currentQuestion: result.payload.questions[this.state.index],
